@@ -6,14 +6,17 @@ function App() {
     <main style={{ 
       width: '100vw', 
       height: '100vh', 
-      position: 'relative', 
+      display: 'flex',
+      flexDirection: 'row',
       backgroundColor: '#09090b', 
       overflow: 'hidden',
       margin: 0,
       padding: 0
     }}>
       <ConfiguratorUI />
-      <Scene />
+      <div style={{ flexGrow: 1, position: 'relative' }}>
+        <Scene />
+      </div>
     </main>
   );
 }

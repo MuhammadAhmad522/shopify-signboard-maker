@@ -28,6 +28,13 @@ interface ConfiguratorState {
   backlightEnabled: boolean;
   frontlightEnabled: boolean;
   
+  // Alucobond Base
+  showBase: boolean;
+  baseWidth: number;
+  baseHeight: number;
+  baseDepth: number;
+  baseColor: string;
+  
   // Environment
   backgroundImage: string | null;
   
@@ -45,6 +52,9 @@ interface ConfiguratorState {
   setGlowColor: (color: string) => void;
   setGlowIntensity: (intensity: number) => void;
   setLighting: (front: boolean, back: boolean) => void;
+  setShowBase: (show: boolean) => void;
+  setBaseDimensions: (w: number, h: number, d: number) => void;
+  setBaseColor: (color: string) => void;
   setBackgroundImage: (image: string | null) => void;
 }
 
@@ -67,6 +77,12 @@ export const useStore = create<ConfiguratorState>((set) => ({
   glowIntensity: 1.5,
   backlightEnabled: true,
   frontlightEnabled: true,
+
+  showBase: false,
+  baseWidth: 6,
+  baseHeight: 2,
+  baseDepth: 0.1,
+  baseColor: '#222222',
   
   backgroundImage: null,
   
@@ -83,5 +99,8 @@ export const useStore = create<ConfiguratorState>((set) => ({
   setGlowColor: (glowColor) => set({ glowColor }),
   setGlowIntensity: (glowIntensity) => set({ glowIntensity }),
   setLighting: (frontlightEnabled, backlightEnabled) => set({ frontlightEnabled, backlightEnabled }),
+  setShowBase: (showBase) => set({ showBase }),
+  setBaseDimensions: (baseWidth, baseHeight, baseDepth) => set({ baseWidth, baseHeight, baseDepth }),
+  setBaseColor: (baseColor) => set({ baseColor }),
   setBackgroundImage: (backgroundImage) => set({ backgroundImage }),
 }));

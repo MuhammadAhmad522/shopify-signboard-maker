@@ -11,6 +11,9 @@ export const ConfiguratorUI: React.FC = () => {
     sideMaterial, setSideMaterial,
     mountingStyle, setMountingStyle,
     frontlightEnabled, backlightEnabled, setLighting,
+    showBase, setShowBase,
+    baseWidth, baseHeight, baseDepth, setBaseDimensions,
+    baseColor, setBaseColor,
     setBackgroundImage
   } = useStore();
 
@@ -46,7 +49,7 @@ export const ConfiguratorUI: React.FC = () => {
   );
 
   return (
-    <div className="fixed left-0 top-0 h-full w-80 bg-black/85 text-white p-6 overflow-y-auto z-10 border-r border-white/10 backdrop-blur-lg shadow-2xl flex flex-col gap-6">
+    <div className="h-full w-80 bg-black/85 text-white p-6 overflow-y-auto border-r border-white/10 backdrop-blur-lg shadow-2xl flex flex-col gap-6 flex-shrink-0 relative z-10">
       <h2 className="text-cyan-400 text-xl font-bold tracking-widest uppercase m-0">3D Configurator</h2>
 
       <div className="flex flex-col gap-2">
@@ -136,6 +139,41 @@ export const ConfiguratorUI: React.FC = () => {
           <OptionButton active={mountingStyle === 'flush'} onClick={() => setMountingStyle('flush')}>FLUSH</OptionButton>
           <OptionButton active={mountingStyle === 'bolt'} onClick={() => setMountingStyle('bolt')}>BOLT</OptionButton>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-4 p-4 bg-white/5 border border-white/10 rounded-lg">
+        <div className="flex justify-between items-center">
+          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Alucobond Base</label>
+          <button 
+            onClick={() => setShowBase(!showBase)}
+            className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${
+              showBase ? 'bg-cyan-400 text-black' : 'bg-white/10 text-white'
+            }`}
+          >
+            {showBase ? 'ON' : 'OFF'}
+          </button>
+        </div>
+
+        {showBase && (
+          <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Width: {baseWidth}m</label>
+              <input type="range" min="1" max="15" step="0.5" value={baseWidth} onChange={(e) => setBaseDimensions(parseFloat(e.target.value), baseHeight, baseDepth)} className="w-full accent-cyan-400" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Height: {baseHeight}m</label>
+              <input type="range" min="0.5" max="10" step="0.5" value={baseHeight} onChange={(e) => setBaseDimensions(baseWidth, parseFloat(e.target.value), baseDepth)} className="w-full accent-cyan-400" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Thickness: {baseDepth}m</label>
+              <input type="range" min="0.05" max="0.5" step="0.05" value={baseDepth} onChange={(e) => setBaseDimensions(baseWidth, baseHeight, parseFloat(e.target.value))} className="w-full accent-cyan-400" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Color</label>
+              <input type="color" value={baseColor} onChange={(e) => setBaseColor(e.target.value)} className="w-full h-8 bg-transparent border border-white/20 rounded cursor-pointer" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">

@@ -18,12 +18,19 @@ export const ExtrudedText: React.FC = () => {
     glowColor,
     glowIntensity,
     backlightEnabled,
-    frontlightEnabled
+    frontlightEnabled,
+    showBase,
+    baseWidth,
+    baseHeight,
+    baseDepth,
+    baseColor
   } = useStore();
 
   const meshRef = useRef<THREE.Group>(null);
 
   const zOffset = mountingStyle === 'bolt' ? 0.3 : 0;
+  // If base is shown, we need to push everything forward a bit so the base is at z=0 or slightly behind
+  const baseOffset = showBase ? baseDepth : 0;
   
   const faceMatProps = useMemo(() => MATERIALS[faceMaterial] || MATERIALS.acrylic, [faceMaterial]);
   const sideMatProps = useMemo(() => MATERIALS[sideMaterial] || MATERIALS.metal, [sideMaterial]);
@@ -32,7 +39,19 @@ export const ExtrudedText: React.FC = () => {
   const safePattiWidth = Math.max(0.01, pattiWidth);
 
   return (
-    <group ref={meshRef} position={[0, 0, zOffset]}>
+    <group ref={meshRef} position={[0, 0, zOffset + baseOffset]}>
+      {/* Alucobond Base */}
+      {showBase && (
+        <mesh position={[0, 0, -baseDepth/2]}>
+          <boxGeometry args={[baseWidth, baseHeight, baseDepth]} />
+          <meshStandardMaterial 
+            color={baseColor} 
+            metalness={0.6} 
+            roughness={0.3} 
+          />
+        </mesh>
+      )}
+
       <Suspense fallback={null}>
         <Center>
           <Text3D

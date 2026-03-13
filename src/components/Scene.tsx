@@ -37,12 +37,10 @@ export const Scene: React.FC = () => {
 
   return (
     <div style={{ 
-      width: '100vw', 
-      height: '100vh', 
+      width: '100%', 
+      height: '100%', 
       background: backgroundImage ? `url(${backgroundImage}) center/cover no-repeat` : '#111',
-      position: 'absolute',
-      top: 0,
-      left: 0,
+      position: 'relative',
       zIndex: 1
     }}>
       <Canvas 
