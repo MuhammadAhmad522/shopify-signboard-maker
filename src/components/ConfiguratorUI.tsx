@@ -5,6 +5,7 @@ export const ConfiguratorUI: React.FC = () => {
   const {
     text, setText,
     fontSize, setFontSize,
+    textAlign, setTextAlign,
     pattiWidth, setPattiWidth,
     faceColor, setFaceColor,
     faceMaterial, setFaceMaterial,
@@ -55,12 +56,21 @@ export const ConfiguratorUI: React.FC = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Signage Text</label>
-        <input 
-          className="w-full bg-white/10 border border-white/20 rounded p-2.5 text-white outline-none focus:border-cyan-400 transition-colors"
-          type="text" 
+        <textarea 
+          className="w-full bg-white/10 border border-white/20 rounded p-2.5 text-white outline-none focus:border-cyan-400 transition-colors resize-none h-24 text-sm"
           value={text} 
           onChange={(e) => setText(e.target.value)} 
+          placeholder="Enter text..."
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Line Alignment</label>
+        <div className="flex gap-2">
+          <OptionButton active={textAlign === 'left'} onClick={() => setTextAlign('left')}>LEFT</OptionButton>
+          <OptionButton active={textAlign === 'center'} onClick={() => setTextAlign('center')}>CENTER</OptionButton>
+          <OptionButton active={textAlign === 'right'} onClick={() => setTextAlign('right')}>RIGHT</OptionButton>
+        </div>
       </div>
 
       <div className="flex flex-col gap-2">

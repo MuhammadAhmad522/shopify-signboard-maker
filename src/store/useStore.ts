@@ -8,6 +8,7 @@ interface ConfiguratorState {
   text: string;
   fontSize: number;
   fontFamily: string;
+  textAlign: 'left' | 'center' | 'right';
   
   // Dimensions & Geometry
   pattiWidth: number; // Extrusion depth
@@ -42,6 +43,7 @@ interface ConfiguratorState {
   setText: (text: string) => void;
   setFontSize: (size: number) => void;
   setFontFamily: (font: string) => void;
+  setTextAlign: (align: 'left' | 'center' | 'right') => void;
   setPattiWidth: (width: number) => void;
   setSheetThickness: (thickness: number) => void;
   setFaceMaterial: (material: MaterialType) => void;
@@ -62,6 +64,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   text: 'SIGNAGE',
   fontSize: 2,
   fontFamily: '/fonts/Inter_Bold.json',
+  textAlign: 'center',
   
   pattiWidth: 50,
   sheetThickness: 0.1,
@@ -89,6 +92,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   setText: (text) => set({ text }),
   setFontSize: (fontSize) => set({ fontSize }),
   setFontFamily: (fontFamily) => set({ fontFamily }),
+  setTextAlign: (textAlign) => set({ textAlign }),
   setPattiWidth: (pattiWidth) => set({ pattiWidth }),
   setSheetThickness: (sheetThickness) => set({ sheetThickness }),
   setFaceMaterial: (faceMaterial) => set({ faceMaterial }),
