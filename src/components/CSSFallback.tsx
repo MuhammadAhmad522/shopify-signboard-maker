@@ -2,7 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 
 export const CSSFallback: React.FC = () => {
-  const { text, faceColor, sideColor, pattiWidth, glowColor, backlightEnabled, backgroundImage } = useStore();
+  const { 
+    text, 
+    faceColor, 
+    sideColor, 
+    pattiWidth, 
+    glowColor, 
+    backlightEnabled, 
+    backgroundImage,
+    showBase,
+    baseWidth,
+    baseHeight,
+    baseDepth,
+    baseColor,
+    fontSize
+  } = useStore();
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -16,7 +30,12 @@ export const CSSFallback: React.FC = () => {
   }, []);
 
   const layers = Math.max(2, Math.floor(pattiWidth * 20));
+  const baseLayers = Math.max(1, Math.floor(baseDepth * 40));
   const displayText = text || ' ';
+
+  // Scale factor: mapping Three.js units (relative to fontSize) to CSS rem
+  // If fontSize=2 maps to 12rem (md:text-[12rem]), then 1 unit = 6rem
+  const scale = 6; 
 
   return (
     <div 
@@ -31,13 +50,40 @@ export const CSSFallback: React.FC = () => {
       </div>
       
       <div 
-        className="relative transition-transform duration-75 ease-out"
+        className="relative transition-transform duration-75 ease-out flex items-center justify-center"
         style={{ 
           transformStyle: 'preserve-3d',
           transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` 
         }}
       >
-        {/* Invisible sizing element */}
+        {/* Alucobond Base Rendering */}
+        {showBase && (
+          <div 
+            className="absolute flex items-center justify-center"
+            style={{ 
+              transformStyle: 'preserve-3d',
+              transform: 'translateZ(-10px)' // Positioned behind the text extrusion
+            }}
+          >
+            {/* Create depth for the base using layers */}
+            {Array.from({ length: baseLayers }).map((_, i) => (
+              <div 
+                key={i}
+                className="absolute rounded-lg shadow-2xl transition-all duration-300"
+                style={{
+                  width: `${baseWidth * scale}rem`,
+                  height: `${baseHeight * scale}rem`,
+                  backgroundColor: baseColor,
+                  transform: `translateZ(${i * -2}px)`, // Extrude backwards
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  filter: i === 0 ? 'brightness(1.2)' : `brightness(${1 - (i * 0.1)})`
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Invisible sizing element to maintain layout */}
         <div className="text-8xl md:text-[12rem] font-bold whitespace-nowrap opacity-0 pointer-events-none">
           {displayText}
         </div>
@@ -48,14 +94,14 @@ export const CSSFallback: React.FC = () => {
             className="absolute inset-0 flex items-center justify-center text-8xl md:text-[12rem] font-bold whitespace-nowrap blur-3xl opacity-60"
             style={{ 
               color: glowColor, 
-              transform: 'translateZ(-10px)' 
+              transform: 'translateZ(-5px)' 
             }}
           >
             {displayText}
           </div>
         )}
         
-        {/* 3D Extrusion Layers */}
+        {/* 3D Extrusion Layers for Text */}
         {Array.from({ length: layers }).map((_, i) => {
           const isFace = i === layers - 1;
           return (
