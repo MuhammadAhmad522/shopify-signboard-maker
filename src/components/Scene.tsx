@@ -1,8 +1,4 @@
-import React, { Suspense, useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, SoftShadows } from '@react-three/drei';
-import { ExtrudedText } from './ExtrudedText';
-import { useStore } from '../store/useStore';
+import React from 'react';
 import { CSSFallback } from './CSSFallback';
 
 export const Scene: React.FC = () => {

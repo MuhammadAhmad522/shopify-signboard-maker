@@ -14,8 +14,7 @@ export const CSSFallback: React.FC = () => {
     baseWidth,
     baseHeight,
     baseDepth,
-    baseColor,
-    fontSize
+    baseColor
   } = useStore();
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
@@ -62,7 +61,7 @@ export const CSSFallback: React.FC = () => {
             className="absolute flex items-center justify-center"
             style={{ 
               transformStyle: 'preserve-3d',
-              transform: 'translateZ(-10px)' // Positioned behind the text extrusion
+              transform: 'translateZ(0px)' // Attached directly to the back of the text
             }}
           >
             {/* Create depth for the base using layers */}
