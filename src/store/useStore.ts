@@ -63,7 +63,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   fontSize: 2,
   fontFamily: '/fonts/Inter_Bold.json',
   
-  pattiWidth: 0.5,
+  pattiWidth: 50,
   sheetThickness: 0.1,
   
   faceMaterial: 'acrylic',
@@ -81,7 +81,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   showBase: false,
   baseWidth: 8,
   baseHeight: 3,
-  baseDepth: 0.2,
+  baseDepth: 3,
   baseColor: '#171717',
   
   backgroundImage: null,

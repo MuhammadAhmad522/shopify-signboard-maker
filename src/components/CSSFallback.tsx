@@ -28,12 +28,16 @@ export const CSSFallback: React.FC = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const layers = Math.max(2, Math.floor(pattiWidth * 20));
-  const baseLayers = Math.max(1, Math.floor(baseDepth * 40));
+  // Conversion factor: 1 ft = 304.8 mm
+  const mmToFt = 1 / 304.8;
+  const pattiWidthFt = pattiWidth * mmToFt;
+  const baseDepthFt = baseDepth * mmToFt;
+
+  const layers = Math.max(2, Math.floor(pattiWidthFt * 200)); // Increased multiplier for mm precision
+  const baseLayers = Math.max(1, Math.floor(baseDepthFt * 200));
   const displayText = text || ' ';
 
-  // Scale factor: mapping Three.js units (relative to fontSize) to CSS rem
-  // If fontSize=2 maps to 12rem (md:text-[12rem]), then 1 unit = 6rem
+  // Scale factor: mapping Three.js units (relative to fontSize in feet) to CSS rem
   const scale = 6; 
 
   return (
@@ -73,7 +77,7 @@ export const CSSFallback: React.FC = () => {
                   width: `${baseWidth * scale}rem`,
                   height: `${baseHeight * scale}rem`,
                   backgroundColor: baseColor,
-                  transform: `translateZ(${i * -2}px)`, // Extrude backwards
+                  transform: `translateZ(${i * -1}px)`, // Extrude backwards (reduced gap per layer)
                   border: '1px solid rgba(255,255,255,0.1)',
                   filter: i === 0 ? 'brightness(1.2)' : `brightness(${1 - (i * 0.1)})`
                 }}
@@ -109,7 +113,7 @@ export const CSSFallback: React.FC = () => {
               className="absolute inset-0 flex items-center justify-center text-8xl md:text-[12rem] font-bold whitespace-nowrap"
               style={{
                 color: isFace ? faceColor : sideColor,
-                transform: `translateZ(${i * 2}px)`,
+                transform: `translateZ(${i * 1}px)`, // Thinner stacks for better mm feel
                 WebkitTextStroke: isFace ? 'none' : `3px ${sideColor}`,
               }}
             >
