@@ -11,17 +11,51 @@ export const CSSFallback: React.FC = () => {
     showBase, baseWidth, baseHeight, baseDepth, baseColor,
     fontSize, textAlign
   } = useStore();
+  
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 40;
-      const y = (e.clientY / window.innerHeight - 0.5) * -40;
-      setRotation({ x: y, y: x });
+      if (!isDragging) return;
+
+      const deltaX = e.clientX - lastMousePos.x;
+      const deltaY = e.clientY - lastMousePos.y;
+
+      setRotation(prev => ({
+        x: prev.x - deltaY * 0.5,
+        y: prev.y + deltaX * 0.5
+      }));
+
+      setOffset(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+
+      setLastMousePos({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, lastMousePos]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setLastMousePos({ x: e.clientX, y: e.clientY });
+  };
 
   const pattiWidthFt = pattiWidth * UNITS.MM_TO_FT;
   const layers = Math.max(2, Math.floor(pattiWidthFt * 200)); 
@@ -32,7 +66,8 @@ export const CSSFallback: React.FC = () => {
 
   return (
     <div 
-      className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden"
+      className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden cursor-move select-none"
+      onMouseDown={handleMouseDown}
       style={{
         background: backgroundImage ? `url(${backgroundImage}) center/cover no-repeat` : '#111',
         perspective: UNITS.PERSPECTIVE
@@ -46,7 +81,7 @@ export const CSSFallback: React.FC = () => {
         className={`relative transition-transform duration-75 ease-out flex flex-col ${flexAlign} justify-center`}
         style={{ 
           transformStyle: 'preserve-3d',
-          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+          transform: `translate(${offset.x}px, ${offset.y}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
           fontSize: `${fontSize * UNITS.FT_TO_REM}rem`
         }}
       >
