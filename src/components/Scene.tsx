@@ -6,6 +6,10 @@ import { useStore } from '../store/useStore';
 import { CSSFallback } from './CSSFallback';
 
 export const Scene: React.FC = () => {
+  // FORCE CSS 3D FALLBACK FOR ALL
+  return <CSSFallback />;
+
+  /*
   const { backgroundImage } = useStore();
   const [webglFailed, setWebglFailed] = useState(false);
 
@@ -39,7 +43,7 @@ export const Scene: React.FC = () => {
     <div style={{ 
       width: '100%', 
       height: '100%', 
-      background: backgroundImage ? `url(${backgroundImage}) center/cover no-repeat` : '#111',
+      background: backgroundImage ? \`url(\${backgroundImage}) center/cover no-repeat\` : '#111',
       position: 'relative',
       zIndex: 1
     }}>
@@ -83,4 +87,5 @@ export const Scene: React.FC = () => {
       </Canvas>
     </div>
   );
+  */
 };
