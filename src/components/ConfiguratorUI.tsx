@@ -1,31 +1,16 @@
 import React from 'react';
-import { useStore, type MaterialType } from '../store/useStore';
+import { useStore } from '../store/useStore';
+import { TextEditor } from './ConfiguratorUI/TextEditor';
+import { MeasurementGroup } from './ConfiguratorUI/MeasurementGroup';
+import { MaterialSelector } from './ConfiguratorUI/MaterialSelector';
+import { LightingControls } from './ConfiguratorUI/LightingControls';
+import { BaseSettings } from './ConfiguratorUI/BaseSettings';
 
 export const ConfiguratorUI: React.FC = () => {
-  const {
-    text, setText,
-    fontSize, setFontSize,
-    textAlign, setTextAlign,
-    pattiWidth, setPattiWidth,
-    faceColor, setFaceColor,
-    faceMaterial, setFaceMaterial,
-    sideColor, setSideColor,
-    sideMaterial, setSideMaterial,
-    mountingStyle, setMountingStyle,
-    frontlightEnabled, backlightEnabled, setLighting,
-    showBase, setShowBase,
-    baseWidth, baseHeight, baseDepth, setBaseDimensions,
-    baseColor, setBaseColor,
-    setBackgroundImage
-  } = useStore();
+  const { setBackgroundImage } = useStore();
 
   const handleAddToCart = () => {
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      const screenshot = canvas.toDataURL('image/png');
-      console.log('Capturing Screenshot:', screenshot.substring(0, 50));
-      alert('Adding to Shopify Cart!');
-    }
+    alert('Adding to Shopify Cart!');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,168 +22,15 @@ export const ConfiguratorUI: React.FC = () => {
     }
   };
 
-  const OptionButton = ({ active, onClick, children }: { active: boolean, onClick: () => void, children: React.ReactNode }) => (
-    <button 
-      onClick={onClick}
-      className={`flex-1 py-2 rounded text-xs font-bold transition-all ${
-        active 
-          ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,229,255,0.4)] border-transparent' 
-          : 'bg-transparent border border-white/20 text-white hover:bg-white/10'
-      }`}
-    >
-      {children}
-    </button>
-  );
-
   return (
     <div className="h-full w-80 bg-black/85 text-white p-6 overflow-y-auto border-r border-white/10 backdrop-blur-lg shadow-2xl flex flex-col gap-6 flex-shrink-0 relative z-10">
       <h2 className="text-cyan-400 text-xl font-bold tracking-widest uppercase m-0">3D Configurator</h2>
 
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Signage Text</label>
-        <textarea 
-          className="w-full bg-white/10 border border-white/20 rounded p-2.5 text-white outline-none focus:border-cyan-400 transition-colors resize-none h-24 text-sm"
-          value={text} 
-          onChange={(e) => setText(e.target.value)} 
-          placeholder="Enter text..."
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Line Alignment</label>
-        <div className="flex gap-2">
-          <OptionButton active={textAlign === 'left'} onClick={() => setTextAlign('left')}>LEFT</OptionButton>
-          <OptionButton active={textAlign === 'center'} onClick={() => setTextAlign('center')}>CENTER</OptionButton>
-          <OptionButton active={textAlign === 'right'} onClick={() => setTextAlign('right')}>RIGHT</OptionButton>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">
-          Font Size (Letter Height): {fontSize.toFixed(1)}ft
-        </label>
-        <input 
-          type="range" 
-          min="0.5" max="10" step="0.5" 
-          value={fontSize} 
-          onChange={(e) => setFontSize(parseFloat(e.target.value))}
-          className="w-full accent-cyan-400"
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">
-          Extrusion (Patti): {pattiWidth.toFixed(0)}mm
-        </label>
-        <input 
-          type="range" 
-          min="1" max="100" step="1" 
-          value={pattiWidth} 
-          onChange={(e) => setPattiWidth(parseFloat(e.target.value))}
-          className="w-full accent-cyan-400"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Face Color</label>
-          <div className="relative">
-            <input 
-              type="color" 
-              value={faceColor} 
-              onChange={(e) => setFaceColor(e.target.value)} 
-              className="w-full h-10 bg-transparent border border-white/20 rounded cursor-pointer" 
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Side Color</label>
-          <input 
-            type="color" 
-            value={sideColor} 
-            onChange={(e) => setSideColor(e.target.value)} 
-            className="w-full h-10 bg-transparent border border-white/20 rounded cursor-pointer" 
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Face Material</label>
-          <select 
-            value={faceMaterial} 
-            onChange={(e) => setFaceMaterial(e.target.value as MaterialType)}
-            className="w-full bg-neutral-900 border border-white/20 rounded p-2 text-white text-sm outline-none focus:border-cyan-400"
-          >
-            <option value="acrylic">Acrylic</option>
-            <option value="metal">Metal</option>
-            <option value="wood">Wood</option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Side Material</label>
-          <select 
-            value={sideMaterial} 
-            onChange={(e) => setSideMaterial(e.target.value as MaterialType)}
-            className="w-full bg-neutral-900 border border-white/20 rounded p-2 text-white text-sm outline-none focus:border-cyan-400"
-          >
-            <option value="metal">Metal</option>
-            <option value="acrylic">Acrylic</option>
-            <option value="wood">Wood</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Lighting Style</label>
-        <div className="flex gap-2">
-          <OptionButton active={frontlightEnabled} onClick={() => setLighting(!frontlightEnabled, backlightEnabled)}>FRONT</OptionButton>
-          <OptionButton active={backlightEnabled} onClick={() => setLighting(frontlightEnabled, !backlightEnabled)}>BACK</OptionButton>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Mounting</label>
-        <div className="flex gap-2">
-          <OptionButton active={mountingStyle === 'flush'} onClick={() => setMountingStyle('flush')}>FLUSH</OptionButton>
-          <OptionButton active={mountingStyle === 'bolt'} onClick={() => setMountingStyle('bolt')}>BOLT</OptionButton>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4 p-4 bg-white/5 border border-white/10 rounded-lg">
-        <div className="flex justify-between items-center">
-          <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Alucobond Base</label>
-          <button 
-            onClick={() => setShowBase(!showBase)}
-            className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${
-              showBase ? 'bg-cyan-400 text-black' : 'bg-white/10 text-white'
-            }`}
-          >
-            {showBase ? 'ON' : 'OFF'}
-          </button>
-        </div>
-
-        {showBase && (
-          <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Width: {baseWidth}ft</label>
-              <input type="range" min="1" max="20" step="0.5" value={baseWidth} onChange={(e) => setBaseDimensions(parseFloat(e.target.value), baseHeight, baseDepth)} className="w-full accent-cyan-400" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Height: {baseHeight}ft</label>
-              <input type="range" min="0.5" max="15" step="0.5" value={baseHeight} onChange={(e) => setBaseDimensions(baseWidth, parseFloat(e.target.value), baseDepth)} className="w-full accent-cyan-400" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Thickness: {baseDepth.toFixed(0)}mm</label>
-              <input type="range" min="1" max="20" step="1" value={baseDepth} onChange={(e) => setBaseDimensions(baseWidth, baseHeight, parseFloat(e.target.value))} className="w-full accent-cyan-400" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Color</label>
-              <input type="color" value={baseColor} onChange={(e) => setBaseColor(e.target.value)} className="w-full h-8 bg-transparent border border-white/20 rounded cursor-pointer" />
-            </div>
-          </div>
-        )}
-      </div>
+      <TextEditor />
+      <MeasurementGroup />
+      <MaterialSelector />
+      <LightingControls />
+      <BaseSettings />
 
       <div className="flex flex-col gap-2">
         <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Wall Preview</label>
