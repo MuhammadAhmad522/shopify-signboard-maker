@@ -4,6 +4,7 @@ import { useStore, type MaterialType } from '../store/useStore';
 export const ConfiguratorUI: React.FC = () => {
   const {
     text, setText,
+    fontSize, setFontSize,
     pattiWidth, setPattiWidth,
     faceColor, setFaceColor,
     faceMaterial, setFaceMaterial,
@@ -64,7 +65,20 @@ export const ConfiguratorUI: React.FC = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">
-          Width (Extrusion): {pattiWidth.toFixed(1)}m
+          Font Size (Letter Height): {fontSize.toFixed(1)}ft
+        </label>
+        <input 
+          type="range" 
+          min="0.5" max="10" step="0.5" 
+          value={fontSize} 
+          onChange={(e) => setFontSize(parseFloat(e.target.value))}
+          className="w-full accent-cyan-400"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">
+          Extrusion (Patti): {pattiWidth.toFixed(1)}ft
         </label>
         <input 
           type="range" 
@@ -157,16 +171,16 @@ export const ConfiguratorUI: React.FC = () => {
         {showBase && (
           <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Width: {baseWidth}m</label>
-              <input type="range" min="1" max="15" step="0.5" value={baseWidth} onChange={(e) => setBaseDimensions(parseFloat(e.target.value), baseHeight, baseDepth)} className="w-full accent-cyan-400" />
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Width: {baseWidth}ft</label>
+              <input type="range" min="1" max="20" step="0.5" value={baseWidth} onChange={(e) => setBaseDimensions(parseFloat(e.target.value), baseHeight, baseDepth)} className="w-full accent-cyan-400" />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Height: {baseHeight}m</label>
-              <input type="range" min="0.5" max="10" step="0.5" value={baseHeight} onChange={(e) => setBaseDimensions(baseWidth, parseFloat(e.target.value), baseDepth)} className="w-full accent-cyan-400" />
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Height: {baseHeight}ft</label>
+              <input type="range" min="0.5" max="15" step="0.5" value={baseHeight} onChange={(e) => setBaseDimensions(baseWidth, parseFloat(e.target.value), baseDepth)} className="w-full accent-cyan-400" />
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Thickness: {baseDepth}m</label>
-              <input type="range" min="0.05" max="0.5" step="0.05" value={baseDepth} onChange={(e) => setBaseDimensions(baseWidth, baseHeight, parseFloat(e.target.value))} className="w-full accent-cyan-400" />
+              <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Thickness: {baseDepth}ft</label>
+              <input type="range" min="0.05" max="1" step="0.05" value={baseDepth} onChange={(e) => setBaseDimensions(baseWidth, baseHeight, parseFloat(e.target.value))} className="w-full accent-cyan-400" />
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[10px] text-neutral-500 uppercase tracking-wider">Base Color</label>

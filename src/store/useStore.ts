@@ -73,16 +73,16 @@ export const useStore = create<ConfiguratorState>((set) => ({
   
   mountingStyle: 'flush',
   
-  glowColor: '#00ffff',
+  glowColor: '#10b981',
   glowIntensity: 1.5,
   backlightEnabled: true,
   frontlightEnabled: true,
 
   showBase: false,
-  baseWidth: 6,
-  baseHeight: 2,
-  baseDepth: 0.1,
-  baseColor: '#222222',
+  baseWidth: 8,
+  baseHeight: 3,
+  baseDepth: 0.2,
+  baseColor: '#171717',
   
   backgroundImage: null,
   
