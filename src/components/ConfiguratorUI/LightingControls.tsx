@@ -16,7 +16,7 @@ const OptionButton = ({ active, onClick, children }: { active: boolean, onClick:
 );
 
 export const LightingControls: React.FC = () => {
-  const { frontlightEnabled, backlightEnabled, setLighting, mountingStyle, setMountingStyle } = useStore();
+  const { frontlightEnabled, backlightEnabled, setLighting, mountingStyle, setMountingStyle, frontLitBacking, setFrontLitBacking } = useStore();
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,6 +27,16 @@ export const LightingControls: React.FC = () => {
           <OptionButton active={backlightEnabled} onClick={() => setLighting(frontlightEnabled, !backlightEnabled)}>BACK</OptionButton>
         </div>
       </div>
+
+      {frontlightEnabled && (
+        <div className="flex flex-col gap-2">
+          <label className={UI.LABEL_STYLE}>Front Lit Backing</label>
+          <div className="flex gap-2">
+            <OptionButton active={frontLitBacking === 'none'} onClick={() => setFrontLitBacking('none')}>NONE</OptionButton>
+            <OptionButton active={frontLitBacking === 'foam_board'} onClick={() => setFrontLitBacking('foam_board')}>FOAM BOARD</OptionButton>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-col gap-2">
         <label className={UI.LABEL_STYLE}>Mounting</label>

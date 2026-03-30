@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../store/useStore';
 import { UI } from '../../constants/constants';
 
@@ -17,6 +17,22 @@ const OptionButton = ({ active, onClick, children }: { active: boolean, onClick:
 
 export const TextEditor: React.FC = () => {
   const { text, setText, textAlign, setTextAlign } = useStore();
+  const [localText, setLocalText] = useState(text);
+
+  useEffect(() => {
+    if (text !== localText) {
+      setLocalText(text);
+    }
+  }, [text]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localText !== text) {
+        setText(localText);
+      }
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [localText, text, setText]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -24,8 +40,8 @@ export const TextEditor: React.FC = () => {
         <label className={UI.LABEL_STYLE}>Signage Text</label>
         <textarea 
           className="w-full bg-white/10 border border-white/20 rounded p-2.5 text-white outline-none focus:border-cyan-400 transition-colors resize-none h-24 text-sm"
-          value={text} 
-          onChange={(e) => setText(e.target.value)} 
+          value={localText} 
+          onChange={(e) => setLocalText(e.target.value)} 
           placeholder="Enter text..."
         />
       </div>

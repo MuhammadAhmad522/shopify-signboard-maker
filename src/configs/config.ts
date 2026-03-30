@@ -12,6 +12,21 @@ export const MATERIALS: Record<string, MaterialProps> = {
     metalness: 1,
     roughness: 0.2,
   },
+  stainless_steel: {
+    color: '#e0e5e9',
+    metalness: 1,
+    roughness: 0.1,
+  },
+  metal_steel: {
+    color: '#46494c',
+    metalness: 0.9,
+    roughness: 0.3,
+  },
+  aluminium: {
+    color: '#d6d6d6',
+    metalness: 0.8,
+    roughness: 0.4,
+  },
   acrylic: {
     color: '#ffffff',
     metalness: 0,
@@ -23,6 +38,11 @@ export const MATERIALS: Record<string, MaterialProps> = {
     color: '#5d4037',
     metalness: 0,
     roughness: 0.8,
+  },
+  wooden: {
+    color: '#8b5a2b',
+    metalness: 0.1,
+    roughness: 0.9,
   }
 };
 

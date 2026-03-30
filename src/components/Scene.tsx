@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useStore } from '../store/useStore';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, ContactShadows, SoftShadows } from '@react-three/drei';
 import { CSSFallback } from './CSSFallback';
+import { ExtrudedText } from './ExtrudedText';
 
 export const Scene: React.FC = () => {
-  // FORCE CSS 3D FALLBACK FOR ALL
-  return <CSSFallback />;
-
-  /*
   const { backgroundImage } = useStore();
   const [webglFailed, setWebglFailed] = useState(false);
 
@@ -39,7 +39,7 @@ export const Scene: React.FC = () => {
     <div style={{ 
       width: '100%', 
       height: '100%', 
-      background: backgroundImage ? \`url(\${backgroundImage}) center/cover no-repeat\` : '#111',
+      background: backgroundImage ? `url(${backgroundImage}) center/cover no-repeat` : '#111',
       position: 'relative',
       zIndex: 1
     }}>
@@ -83,5 +83,4 @@ export const Scene: React.FC = () => {
       </Canvas>
     </div>
   );
-  */
 };

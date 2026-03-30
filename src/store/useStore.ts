@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 
 export type MountingStyle = 'flush' | 'bolt';
-export type MaterialType = 'metal' | 'acrylic' | 'wood';
+export type MaterialType = 'acrylic' | 'stainless_steel' | 'metal_steel' | 'metal' | 'aluminium' | 'wood' | 'wooden';
+export type FaceDesign = 'none' | 'stars' | 'dots' | 'holes';
+export type FrontLitBacking = 'none' | 'foam_board';
 
 interface ConfiguratorState {
   // Text Config
@@ -19,6 +21,8 @@ interface ConfiguratorState {
   faceColor: string;
   sideMaterial: MaterialType;
   sideColor: string;
+  faceDesign: FaceDesign;
+  hasCollarPatti: boolean;
   
   // Mounting
   mountingStyle: MountingStyle;
@@ -28,6 +32,7 @@ interface ConfiguratorState {
   glowIntensity: number;
   backlightEnabled: boolean;
   frontlightEnabled: boolean;
+  frontLitBacking: FrontLitBacking;
   
   // Alucobond Base
   showBase: boolean;
@@ -50,10 +55,13 @@ interface ConfiguratorState {
   setFaceColor: (color: string) => void;
   setSideMaterial: (material: MaterialType) => void;
   setSideColor: (color: string) => void;
+  setFaceDesign: (design: FaceDesign) => void;
+  setHasCollarPatti: (hasPatti: boolean) => void;
   setMountingStyle: (style: MountingStyle) => void;
   setGlowColor: (color: string) => void;
   setGlowIntensity: (intensity: number) => void;
   setLighting: (front: boolean, back: boolean) => void;
+  setFrontLitBacking: (backing: FrontLitBacking) => void;
   setShowBase: (show: boolean) => void;
   setBaseDimensions: (w: number, h: number, d: number) => void;
   setBaseColor: (color: string) => void;
@@ -73,6 +81,8 @@ export const useStore = create<ConfiguratorState>((set) => ({
   faceColor: '#ffffff',
   sideMaterial: 'metal',
   sideColor: '#333333',
+  faceDesign: 'none',
+  hasCollarPatti: false,
   
   mountingStyle: 'flush',
   
@@ -80,6 +90,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   glowIntensity: 1.5,
   backlightEnabled: true,
   frontlightEnabled: true,
+  frontLitBacking: 'none',
 
   showBase: false,
   baseWidth: 8,
@@ -99,10 +110,13 @@ export const useStore = create<ConfiguratorState>((set) => ({
   setFaceColor: (faceColor) => set({ faceColor }),
   setSideMaterial: (sideMaterial) => set({ sideMaterial }),
   setSideColor: (sideColor) => set({ sideColor }),
+  setFaceDesign: (faceDesign) => set({ faceDesign }),
+  setHasCollarPatti: (hasCollarPatti) => set({ hasCollarPatti }),
   setMountingStyle: (mountingStyle) => set({ mountingStyle }),
   setGlowColor: (glowColor) => set({ glowColor }),
   setGlowIntensity: (glowIntensity) => set({ glowIntensity }),
   setLighting: (frontlightEnabled, backlightEnabled) => set({ frontlightEnabled, backlightEnabled }),
+  setFrontLitBacking: (frontLitBacking) => set({ frontLitBacking }),
   setShowBase: (showBase) => set({ showBase }),
   setBaseDimensions: (baseWidth, baseHeight, baseDepth) => set({ baseWidth, baseHeight, baseDepth }),
   setBaseColor: (baseColor) => set({ baseColor }),
