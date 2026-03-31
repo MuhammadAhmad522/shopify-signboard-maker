@@ -10,4 +10,8 @@ export const UI = {
   INPUT_BG: 'bg-white/10 border border-white/20',
   TEXT_SECONDARY: 'text-neutral-400',
   LABEL_STYLE: 'text-xs text-neutral-400 uppercase tracking-wider font-bold',
+  LAYOUT: {
+    MAIN: "flex flex-row w-screen h-screen bg-zinc-950 overflow-hidden m-0 p-0",
+    SCENE_CONTAINER: "flex-grow relative"
+  }
 };

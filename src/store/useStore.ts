@@ -39,6 +39,9 @@ interface ConfiguratorState {
   // Environment
   backgroundImage: string | null;
   
+  // Rendering
+  renderMode: 'webgl' | 'css' | 'ask';
+  
   // Actions
   setText: (text: string) => void;
   setFontSize: (size: number) => void;
@@ -58,6 +61,7 @@ interface ConfiguratorState {
   setBaseDimensions: (w: number, h: number, d: number) => void;
   setBaseColor: (color: string) => void;
   setBackgroundImage: (image: string | null) => void;
+  setRenderMode: (mode: 'webgl' | 'css' | 'ask') => void;
 }
 
 export const useStore = create<ConfiguratorState>((set) => ({
@@ -88,6 +92,7 @@ export const useStore = create<ConfiguratorState>((set) => ({
   baseColor: '#171717',
   
   backgroundImage: null,
+  renderMode: 'ask',
   
   setText: (text) => set({ text }),
   setFontSize: (fontSize) => set({ fontSize }),
@@ -107,4 +112,5 @@ export const useStore = create<ConfiguratorState>((set) => ({
   setBaseDimensions: (baseWidth, baseHeight, baseDepth) => set({ baseWidth, baseHeight, baseDepth }),
   setBaseColor: (baseColor) => set({ baseColor }),
   setBackgroundImage: (backgroundImage) => set({ backgroundImage }),
+  setRenderMode: (renderMode) => set({ renderMode }),
 }));

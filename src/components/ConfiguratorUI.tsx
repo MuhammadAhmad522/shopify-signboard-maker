@@ -7,7 +7,7 @@ import { LightingControls } from './ConfiguratorUI/LightingControls';
 import { BaseSettings } from './ConfiguratorUI/BaseSettings';
 
 export const ConfiguratorUI: React.FC = () => {
-  const { setBackgroundImage } = useStore();
+  const setBackgroundImage = useStore(state => state.setBackgroundImage);
 
   const handleAddToCart = () => {
     alert('Adding to Shopify Cart!');
@@ -33,8 +33,9 @@ export const ConfiguratorUI: React.FC = () => {
       <BaseSettings />
 
       <div className="flex flex-col gap-2">
-        <label className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Wall Preview</label>
+        <label htmlFor="wall-preview-upload" className="text-xs text-neutral-400 uppercase tracking-wider font-bold">Wall Preview</label>
         <input 
+          id="wall-preview-upload"
           type="file" 
           accept="image/*"
           onChange={handleImageUpload} 

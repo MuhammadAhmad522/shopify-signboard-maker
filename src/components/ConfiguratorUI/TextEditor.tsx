@@ -5,6 +5,7 @@ import { UI } from '../../constants/constants';
 const OptionButton = ({ active, onClick, children }: { active: boolean, onClick: () => void, children: React.ReactNode }) => (
   <button 
     onClick={onClick}
+    aria-pressed={active}
     className={`flex-1 py-2 rounded text-xs font-bold transition-all ${
       active 
         ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,229,255,0.4)] border-transparent' 
@@ -16,13 +17,17 @@ const OptionButton = ({ active, onClick, children }: { active: boolean, onClick:
 );
 
 export const TextEditor: React.FC = () => {
-  const { text, setText, textAlign, setTextAlign } = useStore();
+  const text = useStore(state => state.text);
+  const setText = useStore(state => state.setText);
+  const textAlign = useStore(state => state.textAlign);
+  const setTextAlign = useStore(state => state.setTextAlign);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <label className={UI.LABEL_STYLE}>Signage Text</label>
+        <label htmlFor="signage-text" className={UI.LABEL_STYLE}>Signage Text</label>
         <textarea 
+          id="signage-text"
           className="w-full bg-white/10 border border-white/20 rounded p-2.5 text-white outline-none focus:border-cyan-400 transition-colors resize-none h-24 text-sm"
           value={text} 
           onChange={(e) => setText(e.target.value)} 

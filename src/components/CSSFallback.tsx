@@ -73,9 +73,6 @@ export const CSSFallback: React.FC = () => {
         perspective: UNITS.PERSPECTIVE
       }}
     >
-      <div className="absolute top-4 right-4 bg-orange-500/20 text-orange-400 border border-orange-500/50 px-4 py-2 rounded text-sm font-bold backdrop-blur-sm z-50 pointer-events-none shadow-lg">
-        WebGL Disabled - CSS 3D Fallback Mode
-      </div>
       
       <div 
         className={`relative transition-transform duration-75 ease-out flex flex-col ${flexAlign} justify-center`}

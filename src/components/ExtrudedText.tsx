@@ -1,30 +1,29 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, Suspense } from 'react';
 import * as THREE from 'three';
 import { Text3D, Center } from '@react-three/drei';
 import { useStore } from '../store/useStore';
 import { MATERIALS } from '../configs/config';
+import { UNITS } from '../constants/constants';
 
 export const ExtrudedText: React.FC = () => {
-  const { 
-    text, 
-    fontSize, 
-    fontFamily, 
-    pattiWidth, 
-    faceColor,
-    sideColor,
-    faceMaterial,
-    sideMaterial,
-    mountingStyle,
-    glowColor,
-    glowIntensity,
-    backlightEnabled,
-    frontlightEnabled,
-    showBase,
-    baseWidth,
-    baseHeight,
-    baseDepth,
-    baseColor
-  } = useStore();
+  const text = useStore(state => state.text);
+  const fontSize = useStore(state => state.fontSize);
+  const fontFamily = useStore(state => state.fontFamily);
+  const pattiWidth = useStore(state => state.pattiWidth);
+  const faceColor = useStore(state => state.faceColor);
+  const sideColor = useStore(state => state.sideColor);
+  const faceMaterial = useStore(state => state.faceMaterial);
+  const sideMaterial = useStore(state => state.sideMaterial);
+  const mountingStyle = useStore(state => state.mountingStyle);
+  const glowColor = useStore(state => state.glowColor);
+  const glowIntensity = useStore(state => state.glowIntensity);
+  const backlightEnabled = useStore(state => state.backlightEnabled);
+  const frontlightEnabled = useStore(state => state.frontlightEnabled);
+  const showBase = useStore(state => state.showBase);
+  const baseWidth = useStore(state => state.baseWidth);
+  const baseHeight = useStore(state => state.baseHeight);
+  const baseDepth = useStore(state => state.baseDepth);
+  const baseColor = useStore(state => state.baseColor);
 
   const meshRef = useRef<THREE.Group>(null);
 
@@ -35,8 +34,8 @@ export const ExtrudedText: React.FC = () => {
   const faceMatProps = useMemo(() => MATERIALS[faceMaterial] || MATERIALS.acrylic, [faceMaterial]);
   const sideMatProps = useMemo(() => MATERIALS[sideMaterial] || MATERIALS.metal, [sideMaterial]);
 
-  // Ensure minimum depth to prevent rendering errors
-  const safePattiWidth = Math.max(0.01, pattiWidth);
+  // Convert pattiWidth (mm) to the 3D scene units (feet)
+  const safePattiWidth = Math.max(0.01, pattiWidth * UNITS.MM_TO_FT);
 
   return (
     <group ref={meshRef} position={[0, 0, zOffset + baseOffset]}>
@@ -87,20 +86,20 @@ export const ExtrudedText: React.FC = () => {
           </Text3D>
         </Center>
 
-        {/* Backlight Glow effect */}
+        {/* Backlight Glow effect - positioned relative to the back of the text */}
         {backlightEnabled && (
-          <group position={[0, 0, -0.05]}>
-            <Center>
-              <Text3D font={fontFamily} size={fontSize} height={0.01}>
+          <group position={[0, 0, -safePattiWidth / 2 - 0.01]}>
+            <Center top>
+              <Text3D font={fontFamily} size={fontSize} height={0.005}>
                   {text || ' '}
                   <meshBasicMaterial color={glowColor} transparent opacity={0.3} toneMapped={false} />
               </Text3D>
             </Center>
             <pointLight 
-              position={[0, 0, -0.2]} 
+              position={[0, 0, -0.1]} 
               color={glowColor} 
-              intensity={glowIntensity * 5} 
-              distance={10} 
+              intensity={glowIntensity * 2} 
+              distance={fontSize * 2} 
               decay={2} 
             />
           </group>

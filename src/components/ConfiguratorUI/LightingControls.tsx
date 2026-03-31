@@ -2,9 +2,11 @@ import React from 'react';
 import { useStore } from '../../store/useStore';
 import { UI } from '../../constants/constants';
 
-const OptionButton = ({ active, onClick, children }: { active: boolean, onClick: () => void, children: React.ReactNode }) => (
+const OptionButton = ({ active, onClick, children, ariaLabel }: { active: boolean, onClick: () => void, children: React.ReactNode, ariaLabel?: string }) => (
   <button 
     onClick={onClick}
+    aria-pressed={active}
+    aria-label={ariaLabel}
     className={`flex-1 py-2 rounded text-xs font-bold transition-all ${
       active 
         ? 'bg-cyan-400 text-black shadow-[0_0_15px_rgba(0,229,255,0.4)] border-transparent' 
@@ -16,23 +18,27 @@ const OptionButton = ({ active, onClick, children }: { active: boolean, onClick:
 );
 
 export const LightingControls: React.FC = () => {
-  const { frontlightEnabled, backlightEnabled, setLighting, mountingStyle, setMountingStyle } = useStore();
+  const frontlightEnabled = useStore(state => state.frontlightEnabled);
+  const backlightEnabled = useStore(state => state.backlightEnabled);
+  const setLighting = useStore(state => state.setLighting);
+  const mountingStyle = useStore(state => state.mountingStyle);
+  const setMountingStyle = useStore(state => state.setMountingStyle);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <label className={UI.LABEL_STYLE}>Lighting Style</label>
         <div className="flex gap-2">
-          <OptionButton active={frontlightEnabled} onClick={() => setLighting(!frontlightEnabled, backlightEnabled)}>FRONT</OptionButton>
-          <OptionButton active={backlightEnabled} onClick={() => setLighting(frontlightEnabled, !backlightEnabled)}>BACK</OptionButton>
+          <OptionButton ariaLabel="Toggle Frontlight" active={frontlightEnabled} onClick={() => setLighting(!frontlightEnabled, backlightEnabled)}>FRONT</OptionButton>
+          <OptionButton ariaLabel="Toggle Backlight" active={backlightEnabled} onClick={() => setLighting(frontlightEnabled, !backlightEnabled)}>BACK</OptionButton>
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
         <label className={UI.LABEL_STYLE}>Mounting</label>
         <div className="flex gap-2">
-          <OptionButton active={mountingStyle === 'flush'} onClick={() => setMountingStyle('flush')}>FLUSH</OptionButton>
-          <OptionButton active={mountingStyle === 'bolt'} onClick={() => setMountingStyle('bolt')}>BOLT</OptionButton>
+          <OptionButton ariaLabel="Mount Flush" active={mountingStyle === 'flush'} onClick={() => setMountingStyle('flush')}>FLUSH</OptionButton>
+          <OptionButton ariaLabel="Mount with Bolts" active={mountingStyle === 'bolt'} onClick={() => setMountingStyle('bolt')}>BOLT</OptionButton>
         </div>
       </div>
     </div>

@@ -3,15 +3,19 @@ import { useStore } from '../../store/useStore';
 import { UI } from '../../constants/constants';
 
 export const MeasurementGroup: React.FC = () => {
-  const { fontSize, setFontSize, pattiWidth, setPattiWidth } = useStore();
+  const fontSize = useStore(state => state.fontSize);
+  const setFontSize = useStore(state => state.setFontSize);
+  const pattiWidth = useStore(state => state.pattiWidth);
+  const setPattiWidth = useStore(state => state.setPattiWidth);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <label className={UI.LABEL_STYLE}>
+        <label htmlFor="font-size" className={UI.LABEL_STYLE}>
           Font Size (Letter Height): {fontSize.toFixed(1)}ft
         </label>
         <input 
+          id="font-size"
           type="range" 
           min="0.5" max="10" step="0.5" 
           value={fontSize} 
@@ -21,10 +25,11 @@ export const MeasurementGroup: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className={UI.LABEL_STYLE}>
+        <label htmlFor="extrusion-width" className={UI.LABEL_STYLE}>
           Extrusion (Patti): {pattiWidth.toFixed(0)}mm
         </label>
         <input 
+          id="extrusion-width"
           type="range" 
           min="1" max="100" step="1" 
           value={pattiWidth} 

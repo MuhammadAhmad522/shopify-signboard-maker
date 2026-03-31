@@ -1,20 +1,12 @@
 import { Scene } from './components/Scene';
 import { ConfiguratorUI } from './components/ConfiguratorUI';
+import { UI } from './constants/constants';
 
 function App() {
   return (
-    <main style={{ 
-      width: '100vw', 
-      height: '100vh', 
-      display: 'flex',
-      flexDirection: 'row',
-      backgroundColor: '#09090b', 
-      overflow: 'hidden',
-      margin: 0,
-      padding: 0
-    }}>
+    <main className={UI.LAYOUT.MAIN}>
       <ConfiguratorUI />
-      <div style={{ flexGrow: 1, position: 'relative' }}>
+      <div className={UI.LAYOUT.SCENE_CONTAINER}>
         <Scene />
       </div>
     </main>
